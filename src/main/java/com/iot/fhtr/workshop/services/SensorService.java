@@ -2,12 +2,13 @@ package com.iot.fhtr.workshop.services;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iot.fhtr.workshop.dto.Last10ChangesDto;
 import com.iot.fhtr.workshop.dto.LastChangeDto;
 import com.iot.fhtr.workshop.dto.SaveDataDto;
 import com.iot.fhtr.workshop.dto.SensorDto;
@@ -49,17 +50,25 @@ public class SensorService {
 		return lastChangeDtos;
 	}
 
-	public Last10ChangesDto findTop10BySensorId(Integer sensorId) throws Exception {
-		Last10ChangesDto last10ChangesDto = new Last10ChangesDto();
+	public Collection<HashMap<Object, Object>> findTop10BySensorId(Integer sensorId) throws Exception {
 		List<Measurements> measurementsList = measurementsService.findTop10BySensorId(sensorId);
+		HashMap<Integer, HashMap<Object, Object>> last10ChangesMap = new HashMap<Integer, HashMap<Object, Object>>();
 		measurementsList.forEach(x -> {
-			last10ChangesDto.getDateTime().add(x.getMeasuring().getDateTime());
-			last10ChangesDto.getMeasuringUnitIds().add(x.getMeasuringUnit().getMeasuringUnitId());
-			last10ChangesDto.getMeasuringUnitNames().add(x.getMeasuringUnit().getMeasuringUnitName());
-			last10ChangesDto.getMeasuringUnitLabels().add(x.getMeasuringUnit().getMeasuringUnitLabel());
-			last10ChangesDto.getValues().add(x.getValue());
+			if (last10ChangesMap.containsKey(x.getMeasuring().getMeasuringId())) {
+				HashMap<Object, Object> hashMap = last10ChangesMap.get(x.getMeasuring().getMeasuringId());
+				hashMap.put(x.getMeasuringUnit().getMeasuringUnitName(),
+						String.valueOf(x.getValue()) + x.getMeasuringUnit().getMeasuringUnitLabel().toString());
+			} else {
+				HashMap<Object, Object> hashMap = new HashMap<Object, Object>();
+				hashMap.put("measuringId", x.getMeasuring().getMeasuringId());
+				hashMap.put(x.getMeasuringUnit().getMeasuringUnitName(),
+						String.valueOf(x.getValue()) + x.getMeasuringUnit().getMeasuringUnitLabel().toString());
+				last10ChangesMap.put(x.getMeasuring().getMeasuringId(), hashMap);
+			}
+
 		});
-		return last10ChangesDto;
+
+		return last10ChangesMap.values();
 	}
 
 	public Sensor findById(Integer sensorId) throws Exception {

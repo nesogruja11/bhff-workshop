@@ -1,5 +1,7 @@
 package com.iot.fhtr.workshop.controller;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iot.fhtr.workshop.dto.Last10ChangesDto;
 import com.iot.fhtr.workshop.dto.LastChangeDto;
 import com.iot.fhtr.workshop.dto.SaveDataDto;
 import com.iot.fhtr.workshop.dto.SensorDto;
@@ -35,7 +36,7 @@ public class SensorController {
 	}
 
 	@GetMapping("/last-10-changes")
-	public Last10ChangesDto findTop10BySensorId(@RequestParam Integer sensorId) throws Exception {
+	public Collection<HashMap<Object, Object>> findTop10BySensorId(@RequestParam Integer sensorId) throws Exception {
 		return sensorService.findTop10BySensorId(sensorId);
 	}
 
