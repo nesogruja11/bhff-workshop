@@ -67,6 +67,12 @@ public class SensorService {
 				.orElseThrow(() -> new Exception("Nije pronađen senzor (sensorId:" + sensorId + ")!"));
 	}
 
+	public SensorDto findSensorById(Integer sensorId) throws Exception {
+		Sensor sensor = findById(sensorId);
+		List<MeasuringUnit> measuringUnits = sensorMeasuringUnitService.findAllMeasuringUnitsBySensor(sensor);
+		return new SensorDto(sensor.getSensorId(), sensor.getSensorName(), measuringUnits);
+	}
+
 	public List<SensorDto> findAll() {
 		List<SensorDto> sensorDtos = new ArrayList<SensorDto>();
 		List<Sensor> sensors = sensorRepository.findAll();

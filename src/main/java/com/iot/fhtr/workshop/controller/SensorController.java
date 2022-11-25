@@ -43,4 +43,9 @@ public class SensorController {
 	public List<SensorDto> findAll() {
 		return sensorService.findAll();
 	}
+
+	@GetMapping
+	public SensorDto findById(@RequestParam Integer sensorId) throws Exception {
+		return sensorService.findSensorById(sensorId);
+	}
 }
