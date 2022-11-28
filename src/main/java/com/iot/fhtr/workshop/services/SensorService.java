@@ -45,7 +45,7 @@ public class SensorService {
 		measurementsList.forEach(x -> {
 			lastChangeDtos.add(new LastChangeDto(x.getMeasuringUnit().getMeasuringUnitId(), x.getValue(),
 					x.getMeasuringUnit().getMeasuringUnitName(), x.getMeasuringUnit().getMeasuringUnitLabel(),
-					measuring.getDateTime()));
+					measuring.getDateTime(), x.getMeasuringUnit().getColumnName()));
 		});
 		return lastChangeDtos;
 	}

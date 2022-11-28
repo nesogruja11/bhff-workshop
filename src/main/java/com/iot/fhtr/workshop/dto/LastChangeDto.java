@@ -17,4 +17,5 @@ public class LastChangeDto {
 	private String measuringUnit;
 	private String measuringUnitLabel;
 	private LocalDateTime dateTime;
+	private String columnName;
 }
