@@ -1,6 +1,7 @@
 package com.iot.fhtr.workshop.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,8 @@ public class MeasuringService {
 	@Autowired
 	MeasuringRepository measuringRepository;
 
-	public Measuring findTopBySensorOrderByMeasuringIdDesc(Sensor sensor) throws Exception {
-		return measuringRepository.findTopBySensorOrderByMeasuringIdDesc(sensor).orElseThrow(
-				() -> new Exception("Nije pronađeno posljednje mjerenje (sensorId:" + sensor.getSensorId() + ")!"));
+	public Optional<Measuring> findTopBySensorOrderByMeasuringIdDesc(Sensor sensor) throws Exception {
+		return measuringRepository.findTopBySensorOrderByMeasuringIdDesc(sensor);
 	}
 
 	public List<Measuring> findTop10BySensorOrderByMeasuringIdDesc(Sensor sensor) throws Exception {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,13 +41,16 @@ public class SensorService {
 		List<LastChangeDto> lastChangeDtos = new ArrayList<LastChangeDto>();
 		List<Measurements> measurementsList = new ArrayList<Measurements>();
 		Sensor sensor = findById(sensorId);
-		Measuring measuring = measuringService.findTopBySensorOrderByMeasuringIdDesc(sensor);
-		measurementsList = measurementsService.findByMeasuring(measuring);
-		measurementsList.forEach(x -> {
-			lastChangeDtos.add(new LastChangeDto(x.getMeasuringUnit().getMeasuringUnitId(), x.getValue(),
-					x.getMeasuringUnit().getMeasuringUnitName(), x.getMeasuringUnit().getMeasuringUnitLabel(),
-					measuring.getDateTime(), x.getMeasuringUnit().getColumnName()));
-		});
+		Optional<Measuring> measuring = measuringService.findTopBySensorOrderByMeasuringIdDesc(sensor);
+		if (!measuring.isEmpty()) {
+			measurementsList = measurementsService.findByMeasuring(measuring.get());
+			measurementsList.forEach(x -> {
+				lastChangeDtos.add(new LastChangeDto(x.getMeasuringUnit().getMeasuringUnitId(), x.getValue(),
+						x.getMeasuringUnit().getMeasuringUnitName(), x.getMeasuringUnit().getMeasuringUnitLabel(),
+						measuring.get().getDateTime(), x.getMeasuringUnit().getColumnName()));
+			});
+		}
+
 		return lastChangeDtos;
 	}
 
