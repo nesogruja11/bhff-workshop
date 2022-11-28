@@ -30,4 +30,7 @@ public class MeasuringUnit {
 
 	@Column(name = "measuring_unit_label", nullable = false)
 	private String measuringUnitLabel;
+
+	@Column(name = "columnName", nullable = true)
+	private String columnName;
 }

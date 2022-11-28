@@ -63,6 +63,7 @@ public class SensorService {
 				hashMap.put("measuringId", x.getMeasuring().getMeasuringId());
 				hashMap.put(x.getMeasuringUnit().getMeasuringUnitName(),
 						String.valueOf(x.getValue()) + x.getMeasuringUnit().getMeasuringUnitLabel().toString());
+				hashMap.put("dateTime", x.getMeasuring().getDateTime());
 				last10ChangesMap.put(x.getMeasuring().getMeasuringId(), hashMap);
 			}
 
