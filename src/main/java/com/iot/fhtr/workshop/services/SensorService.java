@@ -55,7 +55,12 @@ public class SensorService {
 	}
 
 	public Collection<HashMap<Object, Object>> findTop10BySensorId(Integer sensorId) throws Exception {
-		List<Measurements> measurementsList = measurementsService.findTop10BySensorId(sensorId);
+		Sensor sensor = findById(sensorId);
+		List<Measuring> measuring = measuringService.findTop10BySensorOrderByMeasuringIdDesc(sensor);
+		List<Measurements> measurementsList = new ArrayList<Measurements>();
+		measuring.forEach(x -> {
+			measurementsList.addAll(measurementsService.findByMeasuring(x));
+		});
 		HashMap<Integer, HashMap<Object, Object>> last10ChangesMap = new HashMap<Integer, HashMap<Object, Object>>();
 		measurementsList.forEach(x -> {
 			if (last10ChangesMap.containsKey(x.getMeasuring().getMeasuringId())) {

@@ -18,4 +18,5 @@ public interface MeasurementsRepository extends JpaRepository<Measurements, Inte
 			+ "join measuring on measuring.measuring_id = measurements.measuring_id\r\n"
 			+ "where sensor_id =?1 order by measurements.measuring_id desc limit 10", nativeQuery = true)
 	List<Measurements> findTop10BySensorId(Integer sensorId);
+
 }
